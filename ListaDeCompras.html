@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Lista de Compras</title>
+</head>
+
+<body>
+
+  <h1>Lista de Compras</h1>
+
+  <form name="formularioDeCompras">
+    <div>
+      <label> Quantidade: <input type="text" name="quantidade" /> </label>
+    </div>
+
+    <div>
+      <label> Produto: <input type="text" name="produto" /> </label>
+    </div>
+  </form>
+
+  <br>
+
+  <div>
+    <button id="botaoadd">Adicionar</button>
+    <button id="botaolimpar">Limpar</button>
+  </div>
+
+  <ul id="lista">
+  </ul>
+  <p id="avisos">
+  </p>
+
+  <script>
+    var listaProds = document.getElementById("lista");
+    var botaoAd = document.getElementById("botaoadd");
+    var botaoL = document.getElementById("botaolimpar");
+    var formLista = document.forms.formularioDeCompras;
+    var qtd = formularioDeCompras.quantidade;
+    var produto = formularioDeCompras.produto;
+
+    botaoAd.addEventListener("click", addProduto)
+    botaoL.addEventListener("click", apagarLista);
+
+    function addProduto() {
+      console.log(Number(qtd.value));
+      if ((produto.value=="" && qtd.value=="") || isNaN(Number(qtd.value))) {
+        document.getElementById("avisos").innerText = "Não foi possível adicionar o item, tente novamente!";
+      }
+      else {
+        document.getElementById("avisos").innerText = "";
+        var novoProd = document.createElement("li");
+        novoProd.textContent = Number(qtd.value) + " unidades/kg de " + produto.value;
+        lista.appendChild(novoProd);
+        formularioDeCompras.reset();
+      }
+
+    }
+
+
+    function apagarLista() {
+      while (lista.childElementCount != 0) {
+        lista.removeChild(lista.lastChild);
+      }
+      formularioDeCompras.reset();
+      document.getElementById("avisos").innerText = "Lista apagada com sucesso!";
+    }
+  </script>
+</body>
+
+</html>
