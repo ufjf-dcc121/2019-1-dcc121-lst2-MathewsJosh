@@ -44,8 +44,9 @@
     botaoL.addEventListener("click", apagarLista);
 
     function addProduto() {
-      console.log(Number(qtd.value));
-      if ((produto.value=="" && qtd.value=="") || isNaN(Number(qtd.value))) {
+      //Esse if avisa o usuario em caso de erro de digitação
+      //EX: QTD = letras , QTD = "sem valor", Produto = "sem nome"
+      if ((produto.value == "" && qtd.value == "") || isNaN(Number(qtd.value))) {
         document.getElementById("avisos").innerText = "Não foi possível adicionar o item, tente novamente!";
       }
       else {

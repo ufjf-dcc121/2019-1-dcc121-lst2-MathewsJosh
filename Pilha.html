@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Questão 2 - Pilha</title>
+</head>
+
+<body>
+    <form name="formularioPilha">
+        <div>
+            <label>Valores: <input type="text" name="valor">
+            </label>
+        </div>
+    </form>
+    <br>
+    <div>
+        <button id="empilha">Empilha</button>
+        <button id="desempilha">Desempilha</button>
+    </div>
+
+    <!--Cria Lista Ordenada para a pilha-->
+    <ol id="lista">
+    </ol>
+    <p id="avisos">
+    </p>
+
+    <script>
+        var pilha = [];
+        var listaOrdenada = document.querySelector("#lista");
+        var lista = document.getElementsByTagName("ol")[0];
+        var itens = lista.getElementsByTagName('li');
+        var botaoEmpilha = document.getElementById("empilha");
+        var botaoDesempilha = document.getElementById("desempilha");
+
+
+        botaoEmpilha.addEventListener("click", addItem);
+        botaoDesempilha.addEventListener("click", retiraItem);
+
+        function addItem() {
+            var val = document.forms.formularioPilha.valor.value;
+            if (val == "") {
+                document.getElementById("avisos").innerText = "Não foi possível adicionar o item, tente novamente!";
+            }
+            else {
+                var novoVal = { "val": val };
+                pilha.push(novoVal);
+                var newli = document.createElement("li");
+                newli.textContent = novoVal.val;
+                listaOrdenada.appendChild(newli);
+                formularioPilha.reset();
+                document.getElementById("avisos").innerText = "";
+            }
+        }
+
+        function retiraItem() {
+            if (lista.children.length > 0) {
+                lista.removeChild(itens[(Number(lista.children.length) - 1)]);
+            }
+            else {
+                document.getElementById("avisos").innerText = "Lista Vazia!";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
