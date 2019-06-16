@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Participantes Excursão</title>
+</head>
+
+<body>
+    <!--
+            Formulario dentro de uma tabela
+            Dados: nome e idade
+            Campos: enviar e excluir(só aparece se houver 1+ inscritos) 
+    -->
+    <div id="formularioExcursao">
+        <table border="1" style="width:50%">
+            <td>
+                <form name="dadosParts" align="center">
+                    <h1>Dados do Participante: <br></h1>
+                    <div>
+                        <label>Nome: <input type="text" name="nome"></label>
+                        <br><br>
+                        <label>Idade: <input type="number" name="idade"></label>
+                    </div>
+                    <br>
+                    <div align="center">
+                        <input type="button" value="Enviar" name="enviar" />
+                        <input type="hidden" value="Excluir" name="excluir" />
+                    </div>
+                </form>
+            </td>
+        </table>
+    </div>
+    <br>
+    <!-- //Lista não ordenada de Adultos e Estudantes inscritos na Excursão -->
+    <div id="listas">
+        <table border="1" style="width:50%">
+            <td>
+                <ul>Adultos: <span id="qtdAdultos"></span>
+                </ul>
+                <ul id="adultos"></ul>
+            </td>
+        </table>
+        <table border="1" style="width:50%">
+            <td>
+                <ul>Estudantes: <span id="qtdEst"></span>
+                </ul>
+                <ul id="estudantes"></ul>
+            </td>
+        </table>
+    </div>
+
+    <h4>Total de participantes: <span id="total"> </span></h4>
+
+    <!-- Avisos para caso o usuário digita valores errados ou nulos -->
+    <h2 id="avisos"> </h2>
+
+    <script>
+        //Atualizações de Listas e Textos
+        var listaAdultos = document.getElementById("adultos");
+        var listaEstudantes = document.getElementById("estudantes");
+        var totalParticipantes = document.getElementById("total");
+
+        //Formularios e inputs
+        var formEntrada = document.forms.dadosParts;
+        var add = formEntrada.enviar;
+        var exc = formEntrada.excluir;
+
+        //Contadores
+        var qtd1 = document.getElementById("qtdAdultos");
+        var qtd2 = document.getElementById("qtdEst");
+        var totalNumerico;
+
+        //Eventos
+        add.addEventListener("click", adicionarParticipante);
+        exc.addEventListener("click", removerParticipante);
+
+        function adicionarParticipante() {
+            var nome = formEntrada.nome.value;
+            var idade = formEntrada.idade.value;
+
+            var inscrito = { "nome": nome, "idade": idade }
+            var novoElemento = document.createElement("novoElemento");
+
+            var stringAux = '<input type="checkbox" name="selecao" id="selecao">';
+            novoElemento.innerHTML = stringAux + inscrito.nome + " - " + inscrito.idade + " anos" + " <br> ";
+            novoElemento.addEventListener("click", function () { editacampo(novoElemento) });
+
+            // Verifica se os campos não são nulos, se sim, avisa o usuário
+            if (nome == "" || idade == "") {
+                document.getElementById("avisos").innerText = "Não foi possível adicionar o item, tente novamente!";
+            }
+            //Verifica se é adulto, se sim, adiciona na lista especifica
+            else if (Number(idade) >= 18) {
+                document.getElementById("avisos").innerText = "";
+                listaAdultos.appendChild(novoElemento);
+                qtd1.textContent = listaAdultos.childElementCount;
+            }
+            else {
+                document.getElementById("avisos").innerText = "";
+                listaEstudantes.appendChild(novoElemento);
+                qtd2.textContent = listaEstudantes.childElementCount;
+            }
+            //Calcula total de Participantes
+            totalParticipantes.textContent = listaAdultos.childElementCount + listaEstudantes.childElementCount;
+            //Reseta os campos do formulario
+            formEntrada.nome.focus();
+            formEntrada.reset();
+
+            //Se houver mais de um inscrito, exibe o botão excluir
+            // if (Number(totalParticipantes.textContent) > 0) {
+            //     exc.type = "button";
+            // }
+        }
+
+        //Remove participantes selecionados na caixa de seleção
+        function removerParticipante() {
+            ckList = document.querySelectorAll("input[type=checkbox]:checked");
+            ckList.forEach(function (el) {
+                el.parentElement.remove();
+            });
+            qtd1.textContent = listaAdultos.childElementCount;
+            qtd2.textContent = listaEstudantes.childElementCount;
+            totalParticipantes.textContent = listaAdultos.childElementCount + listaEstudantes.childElementCount;
+        }
+
+        //Permite editar o campo selecionado
+        //OBS: Após 7 segundos, desativa o contentEditable
+        function editacampo(novoElemento) {
+            exc.type = "button";
+            novoElemento.style.color = "blue";
+            novoElemento.contentEditable = "true";
+            setTimeout(function () {
+                novoElemento.style.color = "black";
+                novoElemento.contentEditable = "false";
+            }, 7000);
+        }
+
+    </script>
+
+</body>
+
+</html>
